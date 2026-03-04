@@ -12,7 +12,7 @@ class RandomLightCycle(Lightcycle):
         self.ticks = random.randint(MIN_TICKS, MAX_TICKS)
         self.tick_counter = 0
     def update(self):
-        if self.destroyed == False:
+        if not self.destroyed:
             self.tick_counter += 1
             if self.tick_counter >= self.ticks:
                 self.tick_counter = 0
