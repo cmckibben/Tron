@@ -16,14 +16,15 @@ pygame.init()
 WIDTH, HEIGHT = 800, 600
 SPEED = 5
 SIZE = 5
+VERTICALOFFSET = 30
 BORDER = pygame.Color(255,0,255)
 P1COLOR = pygame.Color(255,0,0)
 P2COLOR = pygame.Color(0,0,255)
 P3COLOR = pygame.Color(0,255,0)
 P4COLOR = pygame.Color(255,255, 0)
-P1STARTX, P1STARTY = int(0), int(HEIGHT/2)
-P2STARTX, P2STARTY = int(WIDTH-SIZE), int(HEIGHT/2)
-P3STARTX, P3STARTY = int(WIDTH/2),int(0)
+P1STARTX, P1STARTY = int(0), int(HEIGHT/2+VERTICALOFFSET)
+P2STARTX, P2STARTY = int(WIDTH-SIZE), int(HEIGHT/2+VERTICALOFFSET)
+P3STARTX, P3STARTY = int(WIDTH/2),int(VERTICALOFFSET)
 P4STARTX, P4STARTY = int(WIDTH/2),int(HEIGHT-SIZE)
 
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -39,7 +40,7 @@ def init(player1type: str, player2type: str, player3type: str, player4type: str)
     lightcycles = []
 
     WIN.fill((0, 0, 0)) # Fill with black
-    pygame.draw.rect(pygame.display.get_surface(), BORDER, Rect((0,0),(WIDTH,HEIGHT)),SIZE)
+    pygame.draw.rect(pygame.display.get_surface(), BORDER, Rect((0,VERTICALOFFSET),(WIDTH,HEIGHT-VERTICALOFFSET)),SIZE)
 
     if player1type == playerchoices[0]:
         lightcycles.append(Lightcycle(P1STARTX,P1STARTY,SPEED,Direction.RIGHT,P1COLOR, SIZE))
