@@ -12,6 +12,7 @@ class Lightcycle():
         self.size = size
         self.destroyed = False
         self.screen = pygame.display.get_surface()
+        self.has_joystick = False
     
     def map_keys(self, up = 0, down = 0, left = 0, right = 0):
         self.up = up
@@ -19,11 +20,21 @@ class Lightcycle():
         self.right = right
         self.left = left
 
+    def set_joystick(self, joystick: pygame.joystick):
+        self.joystick = joystick
+        self.has_joystick = True
+
     def update(self):
+        
         if pygame.key.get_pressed()[self.up]:    self.change_direction(Direction.UP)
         if pygame.key.get_pressed()[self.down]:  self.change_direction(Direction.DOWN)
         if pygame.key.get_pressed()[self.left]:  self.change_direction(Direction.LEFT)
         if pygame.key.get_pressed()[self.right]: self.change_direction(Direction.RIGHT)
+        if self.has_joystick:
+            if self.joystick.get_axis(0) > 0.5: self.change_direction(Direction.RIGHT)
+            if self.joystick.get_axis(0) < -0.5: self.change_direction(Direction.LEFT)
+            if self.joystick.get_axis(1) > 0.5: self.change_direction(Direction.DOWN)
+            if self.joystick.get_axis(1) < -0.5: self.change_direction(Direction.UP)
         if self.direction == Direction.DOWN:
             self.y += self.speed
         if self.direction == Direction.UP:
