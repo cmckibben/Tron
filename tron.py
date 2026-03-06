@@ -49,6 +49,7 @@ joysticks = [pygame.joystick.Joystick(x) for x in range(pygame.joystick.get_coun
 
 playerchoices = ["Human", "None", "Pure Random", "Random with Avoidance"]
 playerNames = ["Player 1", "Player 2", "Player 3", "Player 4"]
+playerJoysticks = [None, None, None, None]
 
 def create_lightcyle(type: str, playernumber: int) -> Lightcycle:
     temp = NoneLightcycle()
@@ -58,7 +59,7 @@ def create_lightcyle(type: str, playernumber: int) -> Lightcycle:
                           STARTINGVALUES[playernumber -1][4], STARTINGVALUES[playernumber -1][5])
         temp.map_keys(KEYPRESSES[playernumber -1][0], KEYPRESSES[playernumber -1][1],
                       KEYPRESSES[playernumber -1][2], KEYPRESSES[playernumber -1][3])
-        if playernumber == 1: temp.set_joystick(joysticks[0])
+        if playerJoysticks[playernumber-1] is not None: temp.set_joystick(playerJoysticks[playernumber-1])
     elif type == playerchoices[2]:
         temp = RandomLightCycle(STARTINGVALUES[playernumber -1][0], STARTINGVALUES[playernumber -1][1],
                           STARTINGVALUES[playernumber -1][2], STARTINGVALUES[playernumber -1][3],
@@ -76,8 +77,10 @@ def init(player1type: str, player2type: str, player3type: str, player4type: str)
     WIN.fill((0, 0, 0)) # Fill with black
     pygame.draw.rect(pygame.display.get_surface(), BORDER, Rect((0,VERTICALOFFSET),(WIDTH,HEIGHT-VERTICALOFFSET)),SIZE)
 
-    for i in range(0,4):
-        lightcycles.append(create_lightcyle(playerchoices[i],i+1))    
+    lightcycles.append(create_lightcyle(player1type,1))    
+    lightcycles.append(create_lightcyle(player2type,2))    
+    lightcycles.append(create_lightcyle(player3type,3))    
+    lightcycles.append(create_lightcyle(player4type,4))    
 
 def main():
 
@@ -87,6 +90,7 @@ def main():
 
 def get_options():
     manager.clear_and_reset()
+    # playerJoysticks = [None, None, None, None]
 
     joysticktext = ["None"]
     for joystick in joysticks:
@@ -137,10 +141,57 @@ def get_options():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 end_game()
+            if event.type == pygame.JOYDEVICEADDED or event.type == pygame.JOYDEVICEREMOVED:
+                    for element in joystickSelectors: element.kill()
+                    joystickSelectors.clear()
+                    joysticktext = ["None"]
+                    joysticks.clear()
+                    for x in range(pygame.joystick.get_count()):
+                        joysticks.append(pygame.joystick.Joystick(x))
+                    for joystick in joysticks:
+                        joysticktext.append(joystick.get_name())
+                    if pygame.joystick.get_count() > 0:
+                        joystickSelectors.append(pygame_gui.elements.UIDropDownMenu(relative_rect=pygame.Rect((100, 150), (200, 50)), options_list=joysticktext, starting_option="None", manager=manager))
+                        joystickSelectors.append(pygame_gui.elements.UIDropDownMenu(relative_rect=pygame.Rect((100, 250), (200, 50)), options_list=joysticktext, starting_option="None", manager=manager))
+                        joystickSelectors.append(pygame_gui.elements.UIDropDownMenu(relative_rect=pygame.Rect((100, 350), (200, 50)), options_list=joysticktext, starting_option="None", manager=manager))
+                        joystickSelectors.append(pygame_gui.elements.UIDropDownMenu(relative_rect=pygame.Rect((100, 450), (200, 50)), options_list=joysticktext, starting_option="None", manager=manager))
+
             manager.process_events(event)
             if event.type == pygame_gui.UI_BUTTON_PRESSED:
                 if event.ui_element == launch_button:
-                    done = True      
+                    done = True
+            if event.type == pygame_gui.UI_DROP_DOWN_MENU_CHANGED:
+                if pygame.joystick.get_count() > 0:
+                    if event.ui_element == joystickSelectors[0]:
+                        if joystickSelectors[1].selected_option[0] == joystickSelectors[0].selected_option[0]:
+                            joystickSelectors[1] = pygame_gui.elements.UIDropDownMenu(relative_rect=pygame.Rect((100, 250), (200, 50)), options_list=joysticktext, starting_option="None", manager=manager)
+                        if joystickSelectors[2].selected_option[0] == joystickSelectors[0].selected_option[0]:
+                            joystickSelectors[2] = pygame_gui.elements.UIDropDownMenu(relative_rect=pygame.Rect((100, 350), (200, 50)), options_list=joysticktext, starting_option="None", manager=manager)
+                        if joystickSelectors[3].selected_option[0] == joystickSelectors[0].selected_option[0]:
+                            joystickSelectors[3] = pygame_gui.elements.UIDropDownMenu(relative_rect=pygame.Rect((100, 450), (200, 50)), options_list=joysticktext, starting_option="None", manager=manager)
+
+                    elif event.ui_element == joystickSelectors[1]:
+                        if joystickSelectors[0].selected_option[0] == joystickSelectors[1].selected_option[0]:
+                            joystickSelectors[0] = pygame_gui.elements.UIDropDownMenu(relative_rect=pygame.Rect((100, 150), (200, 50)), options_list=joysticktext, starting_option="None", manager=manager)
+                        if joystickSelectors[2].selected_option[0] == joystickSelectors[1].selected_option[0]:
+                            joystickSelectors[2] = pygame_gui.elements.UIDropDownMenu(relative_rect=pygame.Rect((100, 350), (200, 50)), options_list=joysticktext, starting_option="None", manager=manager)
+                        if joystickSelectors[3].selected_option[0] == joystickSelectors[1].selected_option[0]:
+                            joystickSelectors[3] = pygame_gui.elements.UIDropDownMenu(relative_rect=pygame.Rect((100, 450), (200, 50)), options_list=joysticktext, starting_option="None", manager=manager)
+                    elif event.ui_element == joystickSelectors[2]:
+                        if joystickSelectors[0].selected_option[0] == joystickSelectors[2].selected_option[0]:
+                            joystickSelectors[0] = pygame_gui.elements.UIDropDownMenu(relative_rect=pygame.Rect((100, 150), (200, 50)), options_list=joysticktext, starting_option="None", manager=manager)
+                        if joystickSelectors[1].selected_option[0] == joystickSelectors[2].selected_option[0]:
+                            joystickSelectors[1] = pygame_gui.elements.UIDropDownMenu(relative_rect=pygame.Rect((100, 250), (200, 50)), options_list=joysticktext, starting_option="None", manager=manager)
+                        if joystickSelectors[3].selected_option[0] == joystickSelectors[2].selected_option[0]:
+                            joystickSelectors[3] = pygame_gui.elements.UIDropDownMenu(relative_rect=pygame.Rect((100, 450), (200, 50)), options_list=joysticktext, starting_option="None", manager=manager)
+
+                    elif event.ui_element == joystickSelectors[3]:
+                        if joystickSelectors[0].selected_option[0] == joystickSelectors[3].selected_option[0]:
+                            joystickSelectors[0] = pygame_gui.elements.UIDropDownMenu(relative_rect=pygame.Rect((100, 150), (200, 50)), options_list=joysticktext, starting_option="None", manager=manager)
+                        if joystickSelectors[1].selected_option[0] == joystickSelectors[3].selected_option[0]:
+                            joystickSelectors[1] = pygame_gui.elements.UIDropDownMenu(relative_rect=pygame.Rect((100, 250), (200, 50)), options_list=joysticktext, starting_option="None", manager=manager)
+                        if joystickSelectors[2].selected_option[0] == joystickSelectors[3].selected_option[0]:
+                            joystickSelectors[2] = pygame_gui.elements.UIDropDownMenu(relative_rect=pygame.Rect((100, 350), (200, 50)), options_list=joysticktext, starting_option="None", manager=manager)
         manager.update(time_delta)
         WIN.fill((0, 0, 0))
         manager.draw_ui(WIN)
@@ -150,6 +201,13 @@ def get_options():
     playerNames[1] = player2NameTextBox.get_text()
     playerNames[2] = player3NameTextBox.get_text()
     playerNames[3] = player4NameTextBox.get_text()
+
+    if pygame.joystick.get_count() > 0:
+        for i in range (0,4):
+            if joystickSelectors[i].selected_option[0] != "None":
+                for joystick in joysticks:
+                    if joystick.get_name() == joystickSelectors[i].selected_option[0]:
+                        playerJoysticks[i] = joystick
 
     init(player1Choice.selected_option[0], player2Choice.selected_option[0], 
          player3Choice.selected_option[0], player4Choice.selected_option[0])
