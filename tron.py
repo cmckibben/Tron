@@ -7,6 +7,9 @@ from pygame.locals import *
 from AI.randomlightcycle import RandomLightCycle
 from AI.randomlightcycleavoid import RandomLightCycleAvoid
 from AI.nonelightcyle import NoneLightcycle
+from AI.zigzag import ZigZagLightcycle
+from AI.zigzagavoid import ZigZagAvoidLightcycle
+from AI.shield import ShieldLightcycle
 from direction import Direction
 from lightcycle import Lightcycle
 
@@ -47,7 +50,7 @@ manager = pygame_gui.UIManager((WIDTH, HEIGHT), theme_path="theme.json")
 pygame.joystick.init()
 joysticks = [pygame.joystick.Joystick(x) for x in range(pygame.joystick.get_count())]
 
-playerchoices = ["Human", "None", "Pure Random", "Random with Avoidance"]
+playerchoices = ["Human", "None", "Pure Random", "Random with Avoidance", "Zig Zag", "Zig Zag Avoid", "Shield"]
 playerNames = ["Player 1", "Player 2", "Player 3", "Player 4"]
 playerJoysticks = [None, None, None, None]
 
@@ -68,7 +71,18 @@ def create_lightcyle(type: str, playernumber: int) -> Lightcycle:
         temp = RandomLightCycleAvoid(STARTINGVALUES[playernumber -1][0], STARTINGVALUES[playernumber -1][1],
                           STARTINGVALUES[playernumber -1][2], STARTINGVALUES[playernumber -1][3],
                           STARTINGVALUES[playernumber -1][4], STARTINGVALUES[playernumber -1][5])
-
+    elif type == playerchoices[4]:
+        temp = ZigZagLightcycle(STARTINGVALUES[playernumber -1][0], STARTINGVALUES[playernumber -1][1],
+                          STARTINGVALUES[playernumber -1][2], STARTINGVALUES[playernumber -1][3],
+                          STARTINGVALUES[playernumber -1][4], STARTINGVALUES[playernumber -1][5])
+    elif type == playerchoices[5]:
+        temp = ZigZagAvoidLightcycle(STARTINGVALUES[playernumber -1][0], STARTINGVALUES[playernumber -1][1],
+                          STARTINGVALUES[playernumber -1][2], STARTINGVALUES[playernumber -1][3],
+                          STARTINGVALUES[playernumber -1][4], STARTINGVALUES[playernumber -1][5])  
+    elif type == playerchoices[6]:
+        temp = ShieldLightcycle(STARTINGVALUES[playernumber -1][0], STARTINGVALUES[playernumber -1][1],
+                          STARTINGVALUES[playernumber -1][2], STARTINGVALUES[playernumber -1][3],
+                          STARTINGVALUES[playernumber -1][4], STARTINGVALUES[playernumber -1][5])                
     return temp
 def init(player1type: str, player2type: str, player3type: str, player4type: str):
     global lightcycles
@@ -271,10 +285,10 @@ def game_over(aliveCount):
     pygame_gui.elements.UILabel(relative_rect=pygame.Rect((100, 150), (WIDTH-100,30)), text="Would you like to play again?",
                                 manager=manager)   
     yes_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((WIDTH/2-150, HEIGHT-100), (150, 50)),
-                                                text='Yes',
+                                                text='Yes',anchors={"centerx": "centerx", "centery":"centery"},
                                                 manager=manager)
     no_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((WIDTH/2+150, HEIGHT-100), (150, 50)),
-                                                text='No',
+                                                text='No',anchors={"centerx": "centerx", "centery":"centery"},
                                                 manager=manager)
     
     done = False
