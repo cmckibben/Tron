@@ -4,6 +4,7 @@ import pygame_gui
 import sys
 from pygame.locals import *
 
+from AI.hunter import HunterLightCycle
 from AI.randomlightcycle import RandomLightCycle
 from AI.randomlightcycleavoid import RandomLightCycleAvoid
 from AI.nonelightcyle import NoneLightcycle
@@ -50,7 +51,7 @@ manager = pygame_gui.UIManager((WIDTH, HEIGHT), theme_path="theme.json")
 pygame.joystick.init()
 joysticks = [pygame.joystick.Joystick(x) for x in range(pygame.joystick.get_count())]
 
-playerchoices = ["Human", "None", "Pure Random", "Random with Avoidance", "Zig Zag", "Zig Zag Avoid", "Shield"]
+playerchoices = ["Human", "None", "Pure Random", "Random with Avoidance", "Zig Zag", "Zig Zag Avoid", "Shield", "Hunter"]
 playerNames = ["Player 1", "Player 2", "Player 3", "Player 4"]
 playerJoysticks = [None, None, None, None]
 
@@ -82,7 +83,11 @@ def create_lightcyle(type: str, playernumber: int) -> Lightcycle:
     elif type == playerchoices[6]:
         temp = ShieldLightcycle(STARTINGVALUES[playernumber -1][0], STARTINGVALUES[playernumber -1][1],
                           STARTINGVALUES[playernumber -1][2], STARTINGVALUES[playernumber -1][3],
-                          STARTINGVALUES[playernumber -1][4], STARTINGVALUES[playernumber -1][5])                
+                          STARTINGVALUES[playernumber -1][4], STARTINGVALUES[playernumber -1][5])    
+    elif type == playerchoices[7]:
+        temp = HunterLightCycle(STARTINGVALUES[playernumber -1][0], STARTINGVALUES[playernumber -1][1],
+                          STARTINGVALUES[playernumber -1][2], STARTINGVALUES[playernumber -1][3],
+                          STARTINGVALUES[playernumber -1][4], STARTINGVALUES[playernumber -1][5])                      
     return temp
 def init(player1type: str, player2type: str, player3type: str, player4type: str):
     global lightcycles
@@ -94,7 +99,16 @@ def init(player1type: str, player2type: str, player3type: str, player4type: str)
     lightcycles.append(create_lightcyle(player1type,1))    
     lightcycles.append(create_lightcyle(player2type,2))    
     lightcycles.append(create_lightcyle(player3type,3))    
-    lightcycles.append(create_lightcyle(player4type,4))    
+    lightcycles.append(create_lightcyle(player4type,4))
+
+    if player1type == playerchoices[7]:    
+        lightcycles[0].assignTargets([lightcycles[1], lightcycles[2], lightcycles[3]])
+    if player2type == playerchoices[7]:    
+        lightcycles[1].assignTargets([lightcycles[0], lightcycles[2], lightcycles[3]])
+    if player3type == playerchoices[7]:    
+        lightcycles[2].assignTargets([lightcycles[0], lightcycles[1], lightcycles[3]])
+    if player4type == playerchoices[7]:    
+        lightcycles[3].assignTargets([lightcycles[0], lightcycles[1], lightcycles[2]])
 
 def main():
 
@@ -104,8 +118,8 @@ def main():
 
 def get_options():
     manager.clear_and_reset()
-    # playerJoysticks = [None, None, None, None]
 
+    defaultAI = "Hunter"
     joysticktext = ["None"]
     for joystick in joysticks:
         joysticktext.append(joystick.get_name())
@@ -127,21 +141,21 @@ def get_options():
 
     pygame_gui.elements.UILabel(relative_rect=pygame.Rect((100, 200), (150, 50)), text="Player 2 Selection",
                                 manager=manager)
-    player2Choice = pygame_gui.elements.UIDropDownMenu(relative_rect=pygame.Rect((250, 200), (200, 50)),options_list=playerchoices, starting_option="Random with Avoidance", manager=manager)
+    player2Choice = pygame_gui.elements.UIDropDownMenu(relative_rect=pygame.Rect((250, 200), (200, 50)),options_list=playerchoices, starting_option=defaultAI, manager=manager)
     pygame_gui.elements.UILabel(relative_rect=pygame.Rect((450, 200), (150, 50)), text="Player 2 Name", manager=manager)
     player2NameTextBox = pygame_gui.elements.UITextEntryLine(relative_rect=pygame.Rect((600, 200), (150, 50)),initial_text=playerNames[1], manager=manager)
     player2NameTextBox.set_text_length_limit(15)
 
     pygame_gui.elements.UILabel(relative_rect=pygame.Rect((100, 300), (150, 50)), text="Player 3 Selection",
                                 manager=manager)
-    player3Choice = pygame_gui.elements.UIDropDownMenu(relative_rect=pygame.Rect((250, 300), (200, 50)),options_list=playerchoices, starting_option="Random with Avoidance", manager=manager)
+    player3Choice = pygame_gui.elements.UIDropDownMenu(relative_rect=pygame.Rect((250, 300), (200, 50)),options_list=playerchoices, starting_option=defaultAI, manager=manager)
     pygame_gui.elements.UILabel(relative_rect=pygame.Rect((450, 300), (150, 50)), text="Player 3 Name", manager=manager)
     player3NameTextBox = pygame_gui.elements.UITextEntryLine(relative_rect=pygame.Rect((600, 300), (150, 50)),initial_text=playerNames[2], manager=manager)
     player3NameTextBox.set_text_length_limit(15)
 
     pygame_gui.elements.UILabel(relative_rect=pygame.Rect((100, 400), (150, 50)), text="Player 4 Selection",
                                 manager=manager)
-    player4Choice = pygame_gui.elements.UIDropDownMenu(relative_rect=pygame.Rect((250, 400), (200, 50)),options_list=playerchoices, starting_option="Random with Avoidance", manager=manager)
+    player4Choice = pygame_gui.elements.UIDropDownMenu(relative_rect=pygame.Rect((250, 400), (200, 50)),options_list=playerchoices, starting_option=defaultAI, manager=manager)
     pygame_gui.elements.UILabel(relative_rect=pygame.Rect((450, 400), (150, 50)), text="Player 4 Name", manager=manager)
     player4NameTextBox = pygame_gui.elements.UITextEntryLine(relative_rect=pygame.Rect((600, 400), (150, 50)),initial_text=playerNames[3], manager=manager)
     player4NameTextBox.set_text_length_limit(15)
