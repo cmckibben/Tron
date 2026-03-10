@@ -14,6 +14,8 @@ class ZigZagAvoidLightcycle(ZigZagLightcycle):
                     valid_directions.append(Direction.LEFT)
                 if pygame.Surface.get_at(self.screen, (int(self.x+self.speed), int(self.y-self.speed))) == pygame.Color(0, 0, 0):
                     valid_directions.append(Direction.RIGHT)
+                if pygame.Surface.get_at(self.screen, (int(self.x), int(self.y-2*self.speed))) == pygame.Color(0, 0, 0):
+                    valid_directions.append(Direction.UP)                    
                 if len(valid_directions) > 0:                    
                     self.y -= self.speed
             if self.direction == Direction.UP:
@@ -21,6 +23,8 @@ class ZigZagAvoidLightcycle(ZigZagLightcycle):
                     valid_directions.append(Direction.LEFT)
                 if pygame.Surface.get_at(self.screen, (int(self.x+self.speed), int(self.y+self.speed))) == pygame.Color(0, 0, 0):
                     valid_directions.append(Direction.RIGHT)
+                if pygame.Surface.get_at(self.screen, (int(self.x), int(self.y+2*self.speed))) == pygame.Color(0, 0, 0):
+                    valid_directions.append(Direction.DOWN)                       
                 if len(valid_directions) > 0:                    
                     self.y += self.speed            
             if self.direction == Direction.RIGHT:
@@ -28,6 +32,8 @@ class ZigZagAvoidLightcycle(ZigZagLightcycle):
                     valid_directions.append(Direction.DOWN)
                 if pygame.Surface.get_at(self.screen, (int(self.x-self.speed), int(self.y-self.speed))) == pygame.Color(0, 0, 0):
                     valid_directions.append(Direction.UP)
+                if pygame.Surface.get_at(self.screen, (int(self.x-2*self.speed), int(self.y+self.speed))) == pygame.Color(0, 0, 0):
+                    valid_directions.append(Direction.LEFT)
                 if len(valid_directions) > 0:                 
                     self.x -= self.speed
             if self.direction == Direction.LEFT:
@@ -35,17 +41,12 @@ class ZigZagAvoidLightcycle(ZigZagLightcycle):
                     valid_directions.append(Direction.DOWN)
                 if pygame.Surface.get_at(self.screen, (int(self.x+self.speed), int(self.y-self.speed))) == pygame.Color(0, 0, 0):
                     valid_directions.append(Direction.UP)
+                if pygame.Surface.get_at(self.screen, (int(self.x+2*self.speed), int(self.y+self.speed))) == pygame.Color(0, 0, 0):
+                    valid_directions.append(Direction.RIGHT)
                 if len(valid_directions) > 0:                 
                     self.x += self.speed
             if len(valid_directions) > 0:
                 self.destroyed = False
                 self.direction = random.choice(valid_directions)
                 self.setDirectionList()
-                if self.direction == Direction.DOWN:
-                    self.y += self.speed
-                if self.direction == Direction.UP:
-                    self.y -= self.speed
-                if self.direction == Direction.RIGHT:
-                    self.x += self.speed
-                if self.direction == Direction.LEFT:
-                    self.x -= self.speed 
+                self.update()

@@ -285,10 +285,10 @@ def game_over(aliveCount):
     pygame_gui.elements.UILabel(relative_rect=pygame.Rect((100, 150), (WIDTH-100,30)), text="Would you like to play again?",
                                 manager=manager)   
     yes_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((WIDTH/2-150, HEIGHT-100), (150, 50)),
-                                                text='Yes',anchors={"centerx": "centerx", "centery":"centery"},
+                                                text='Yes',
                                                 manager=manager)
     no_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((WIDTH/2+150, HEIGHT-100), (150, 50)),
-                                                text='No',anchors={"centerx": "centerx", "centery":"centery"},
+                                                text='No',
                                                 manager=manager)
     
     done = False

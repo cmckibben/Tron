@@ -10,13 +10,14 @@ class ZigZagLightcycle(Lightcycle):
         Lightcycle.__init__(self,x,y,speed,direction,color,size)
         self.ticks = 1
         self.tick_counter = 0
-        self.directionList = []
-        self.directionIndex = 0
+ 
         self.setDirectionList()
 
  
 
     def setDirectionList(self):
+        self.directionList = []
+        self.directionIndex = 0
         if self.direction == Direction.UP:
             self.directionList = [Direction.LEFT,Direction.UP]
         if self.direction == Direction.DOWN:
