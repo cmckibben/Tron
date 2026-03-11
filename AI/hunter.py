@@ -14,26 +14,6 @@ class HunterLightCycle(Lightcycle):
         self.targets = targets
         self.targetIndex = random.randint(0,len(self.targets)-1)
     def update(self):
-        #check if target is destroyed and then pick another
-        if self.targets[self.targetIndex].is_destroyed():
-            self.targets.pop(self.targetIndex)
-            self.targetIndex = random.randint(0,len(self.targets)-1)
-        
-        #attempt to get closer to target
-        distanceX = abs(self.x - self.targets[self.targetIndex].x)
-        distanceY = abs(self.y - self.targets[self.targetIndex].y)
-
-        if distanceX > distanceY:
-            if self.x > self.targets[self.targetIndex].x and self.direction != Direction.RIGHT:
-                self.direction = Direction.LEFT
-            elif self.direction != Direction.LEFT:
-                self.direction = Direction.RIGHT
-        else:
-            if self.y > self.targets[self.targetIndex].y and self.direction != Direction.DOWN:
-                self.direction = Direction.UP
-            elif self.direction != Direction.UP:
-                self.direction = Direction.DOWN
-
         # Move
         if self.direction == Direction.DOWN:
             self.y += self.speed
@@ -45,7 +25,34 @@ class HunterLightCycle(Lightcycle):
             self.x -= self.speed 
         if pygame.Surface.get_at(self.screen, (int(self.x), int(self.y))) != pygame.Color(0, 0, 0):
             self.destroyed = True
-            self.speed = 0
+        else:
+            #check if target is destroyed and then pick another
+            if self.targets[self.targetIndex].is_destroyed():
+                self.targets.pop(self.targetIndex)
+                if len(self.targets) > 0:
+                    self.targetIndex = random.randint(0,len(self.targets)-1)
+            
+            if len(self.targets) > 0:
+                #attempt to get closer to target
+                distanceX = abs(self.x - self.targets[self.targetIndex].x)
+                distanceY = abs(self.y - self.targets[self.targetIndex].y)
+
+                if distanceX > distanceY:
+                    if self.x > self.targets[self.targetIndex].x and self.direction != Direction.RIGHT:
+                        if pygame.Surface.get_at(self.screen, (int(self.x-self.speed), int(self.y))) == pygame.Color(0, 0, 0):
+                            self.direction = Direction.LEFT
+                    elif self.direction != Direction.LEFT:
+                        if pygame.Surface.get_at(self.screen, (int(self.x+self.speed), int(self.y))) == pygame.Color(0, 0, 0):
+                            self.direction = Direction.RIGHT
+                else:
+                    if self.y > self.targets[self.targetIndex].y and self.direction != Direction.DOWN:
+                        if pygame.Surface.get_at(self.screen, (int(self.x), int(self.y-self.speed))) == pygame.Color(0, 0, 0):
+                            self.direction = Direction.UP
+                    elif self.direction != Direction.UP:
+                        if pygame.Surface.get_at(self.screen, (int(self.x), int(self.y+self.speed))) == pygame.Color(0, 0, 0):
+                            self.direction = Direction.DOWN
+
+
     
         #Avoid
 
@@ -89,4 +96,6 @@ class HunterLightCycle(Lightcycle):
                 if self.direction == Direction.RIGHT:
                     self.x += self.speed
                 if self.direction == Direction.LEFT:
-                    self.x -= self.speed 
+                    self.x -= self.speed
+            else: 
+                self.speed = 0

@@ -92,6 +92,7 @@ def create_lightcyle(type: str, playernumber: int) -> Lightcycle:
 def init(player1type: str, player2type: str, player3type: str, player4type: str):
     global lightcycles
     lightcycles = []
+    lightcycles.clear()
 
     WIN.fill((0, 0, 0)) # Fill with black
     pygame.draw.rect(pygame.display.get_surface(), BORDER, Rect((0,VERTICALOFFSET),(WIDTH,HEIGHT-VERTICALOFFSET)),SIZE)
