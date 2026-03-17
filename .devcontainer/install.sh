@@ -54,8 +54,8 @@ package_list="
     unzip \
     nano \
     locales \
-    python3-pygame \
-    python3-tk "
+    python3-tk \
+    pip"
 
 # Packages to attempt to install if essential tools are missing (ie: vncpasswd).
 # This is useful, at least, for Ubuntu 22.04 (jammy)
