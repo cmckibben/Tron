@@ -186,13 +186,13 @@ def get_options():
 
     for i in range(0,4):
         playerNames[i] = optionWindows[i].getName()
-
     if pygame.joystick.get_count() > 0:
-        for i in range (0,4):
-            if joystickSelectors[i].selected_option[0] != "None":
+        for i in range(0,4):
+            if optionWindows[i].getJoystick() != "None":
                 for joystick in joysticks:
-                    if joystick.get_name() == joystickSelectors[i].selected_option[0]:
+                    if joystick.get_name() == optionWindows[i].getJoystick():
                         playerJoysticks[i] = joystick
+
 
     init(optionWindows[0].getPlayerType(), optionWindows[1].getPlayerType(), 
          optionWindows[2].getPlayerType(), optionWindows[3].getPlayerType())

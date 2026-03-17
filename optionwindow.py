@@ -51,7 +51,7 @@ class OptionWindow(pygame_gui.elements.ui_window.UIWindow):
         if self.has_joystick:
             return self.joystickDropdown.selected_option[0]
         else: 
-            return ""
+            return "None"
         
     def on_close_window_button_pressed(self):
         self.hidden = True
