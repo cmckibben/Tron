@@ -1,5 +1,5 @@
 import pygame
-from pygame.locals import *
+
 from direction import Direction
 from lightcycle import Lightcycle
 

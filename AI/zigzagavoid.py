@@ -7,7 +7,7 @@ from direction import Direction
 class ZigZagAvoidLightcycle(ZigZagLightcycle):
     def update(self):
         ZigZagLightcycle.update(self)
-        if self.destroyed == True:
+        if self.destroyed:
             valid_directions = []
             if self.direction == Direction.DOWN:
                 if pygame.Surface.get_at(self.screen, (int(self.x-self.speed), int(self.y-self.speed))) == pygame.Color(0, 0, 0):
@@ -48,5 +48,5 @@ class ZigZagAvoidLightcycle(ZigZagLightcycle):
             if len(valid_directions) > 0:
                 self.destroyed = False
                 self.direction = random.choice(valid_directions)
-                self.setDirectionList()
+                self.set_direction_list()
                 self.update()

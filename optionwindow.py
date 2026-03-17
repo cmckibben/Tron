@@ -4,6 +4,8 @@ import pygame_gui
 class OptionWindow(pygame_gui.elements.ui_window.UIWindow):
     def __init__(self, rect,manager, player_number, player_choices, initial_name, starting_player_type="Human"):
         super(OptionWindow, self).__init__(rect=rect,manager=manager,window_display_title=f"Player {player_number}")
+        self.hidden = False
+        self.joystickDropdown = None
         self.manager = manager
         self.has_joystick=False
         self.selectionLabel = pygame_gui.elements.UILabel(relative_rect=pygame.Rect((0, 0), (-1, 30)), 
@@ -29,25 +31,25 @@ class OptionWindow(pygame_gui.elements.ui_window.UIWindow):
                                     'left_target':self.nameLabel, 'bottom_target': self.nameLabel})
         self.nameTextBox.set_text_length_limit(15)
     
-    def addJoystick(self, joysticktext):
-        if self.has_joystick == True: self.joystickDropdown.kill()
+    def add_joystick(self, joystick_text):
+        if self.has_joystick: self.joystickDropdown.kill()
         self.has_joystick = True
-        self.joystickDropdown = pygame_gui.elements.UIDropDownMenu(relative_rect=pygame.Rect((10, 5), (200, 30)), 
-                                    options_list=joysticktext, starting_option="None", 
-                                    manager=self.manager, container = self, 
-                                    anchors={'left': 'left','top': 'top', 
+        self.joystickDropdown = pygame_gui.elements.UIDropDownMenu(relative_rect=pygame.Rect((10, 5), (200, 30)),
+                                                                   options_list=joystick_text, starting_option="None",
+                                                                   manager=self.manager, container = self,
+                                                                   anchors={'left': 'left','top': 'top',
                                     'left_target':self.selectionLabel, 'top_target': self.selectionLabel})
-    def removeJoystick(self):
+    def remove_joystick(self):
         if self.has_joystick: self.joystickDropdown.kill()
         self.has_joystick = False
 
-    def getName(self) -> str:
+    def get_name(self) -> str:
         return self.nameTextBox.get_text()
     
-    def getPlayerType(self) -> str:
+    def get_player_type(self) -> str:
        return self.playerChoice.selected_option[0]
     
-    def getJoystick(self) -> str:
+    def get_joystick(self) -> str:
         if self.has_joystick:
             return self.joystickDropdown.selected_option[0]
         else: 
@@ -57,5 +59,5 @@ class OptionWindow(pygame_gui.elements.ui_window.UIWindow):
         self.hidden = True
         super.hide()
     
-    def getJoystickDropdown(self):
+    def get_joystick_dropdown(self):
         return self.joystickDropdown

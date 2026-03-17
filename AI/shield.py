@@ -12,14 +12,7 @@ class ShieldLightcycle(Lightcycle):
           
     def update(self):
         if not self.destroyed:
-            if self.direction == Direction.DOWN:
-                self.y += self.speed
-            if self.direction == Direction.UP:
-                self.y -= self.speed
-            if self.direction == Direction.RIGHT:
-                self.x += self.speed
-            if self.direction == Direction.LEFT:
-                self.x -= self.speed 
+            self.move()
             if pygame.Surface.get_at(self.screen, (int(self.x), int(self.y))) != pygame.Color(0, 0, 0):
                 self.destroyed = True
         if self.destroyed:

@@ -18,23 +18,16 @@ class RandomLightCycle(Lightcycle):
                 self.tick_counter = 0
                 done = False
                 while not done:
-                    dir = random.choice(list(Direction))
-                    if dir != self.direction:
-                        if  (self.direction == Direction.DOWN and dir == Direction.UP) or \
-                            (self.direction == Direction.UP and dir == Direction.DOWN) or \
-                            (self.direction == Direction.LEFT and dir == Direction.RIGHT) or \
-                            (self.direction == Direction.RIGHT and dir == Direction.LEFT):
+                    direction = random.choice(list(Direction))
+                    if direction != self.direction:
+                        if  (self.direction == Direction.DOWN and direction == Direction.UP) or \
+                            (self.direction == Direction.UP and direction == Direction.DOWN) or \
+                            (self.direction == Direction.LEFT and direction == Direction.RIGHT) or \
+                            (self.direction == Direction.RIGHT and direction == Direction.LEFT):
                             pass
                         else:
-                            self.direction = dir
+                            self.direction = direction
                             done = True
-            if self.direction == Direction.DOWN:
-                self.y += self.speed
-            if self.direction == Direction.UP:
-                self.y -= self.speed
-            if self.direction == Direction.RIGHT:
-                self.x += self.speed
-            if self.direction == Direction.LEFT:
-                self.x -= self.speed 
+                self.move()
             if pygame.Surface.get_at(self.screen, (int(self.x), int(self.y))) != pygame.Color(0, 0, 0):
                 self.destroyed = True

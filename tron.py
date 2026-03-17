@@ -53,44 +53,47 @@ manager = pygame_gui.UIManager((WIDTH, HEIGHT), theme_path="theme.json")
 pygame.joystick.init()
 joysticks = [pygame.joystick.Joystick(x) for x in range(pygame.joystick.get_count())]
 
-playerchoices = ["Human", "None", "Pure Random", "Random with Avoidance", "Zig Zag", "Zig Zag Avoid", "Shield", "Hunter"]
-playerNames = ["Player 1", "Player 2", "Player 3", "Player 4"]
-playerJoysticks = [None, None, None, None]
+player_choices = ["Human", "None", "Pure Random", "Random with Avoidance", "Zig Zag", "Zig Zag Avoid", "Shield", "Hunter"]
+player_names = ["Player 1", "Player 2", "Player 3", "Player 4"]
+player_joysticks = [None, None, None, None]
 
-def create_lightcyle(type: str, playernumber: int) -> Lightcycle:
+def create_lightcyle(lightcycle_type: str, player_number: int) -> Lightcycle:
     temp = NoneLightcycle()
-    if type == playerchoices[0]:
-        temp = Lightcycle(STARTINGVALUES[playernumber -1][0], STARTINGVALUES[playernumber -1][1],
-                          STARTINGVALUES[playernumber -1][2], STARTINGVALUES[playernumber -1][3],
-                          STARTINGVALUES[playernumber -1][4], STARTINGVALUES[playernumber -1][5])
-        temp.map_keys(KEYPRESSES[playernumber -1][0], KEYPRESSES[playernumber -1][1],
-                      KEYPRESSES[playernumber -1][2], KEYPRESSES[playernumber -1][3])
-        if playerJoysticks[playernumber-1] is not None: temp.set_joystick(playerJoysticks[playernumber-1])
-    elif type == playerchoices[2]:
-        temp = RandomLightCycle(STARTINGVALUES[playernumber -1][0], STARTINGVALUES[playernumber -1][1],
-                          STARTINGVALUES[playernumber -1][2], STARTINGVALUES[playernumber -1][3],
-                          STARTINGVALUES[playernumber -1][4], STARTINGVALUES[playernumber -1][5])
-    elif type == playerchoices[3]:
-        temp = RandomLightCycleAvoid(STARTINGVALUES[playernumber -1][0], STARTINGVALUES[playernumber -1][1],
-                          STARTINGVALUES[playernumber -1][2], STARTINGVALUES[playernumber -1][3],
-                          STARTINGVALUES[playernumber -1][4], STARTINGVALUES[playernumber -1][5])
-    elif type == playerchoices[4]:
-        temp = ZigZagLightcycle(STARTINGVALUES[playernumber -1][0], STARTINGVALUES[playernumber -1][1],
-                          STARTINGVALUES[playernumber -1][2], STARTINGVALUES[playernumber -1][3],
-                          STARTINGVALUES[playernumber -1][4], STARTINGVALUES[playernumber -1][5])
-    elif type == playerchoices[5]:
-        temp = ZigZagAvoidLightcycle(STARTINGVALUES[playernumber -1][0], STARTINGVALUES[playernumber -1][1],
-                          STARTINGVALUES[playernumber -1][2], STARTINGVALUES[playernumber -1][3],
-                          STARTINGVALUES[playernumber -1][4], STARTINGVALUES[playernumber -1][5])  
-    elif type == playerchoices[6]:
-        temp = ShieldLightcycle(STARTINGVALUES[playernumber -1][0], STARTINGVALUES[playernumber -1][1],
-                          STARTINGVALUES[playernumber -1][2], STARTINGVALUES[playernumber -1][3],
-                          STARTINGVALUES[playernumber -1][4], STARTINGVALUES[playernumber -1][5])    
-    elif type == playerchoices[7]:
-        temp = HunterLightCycle(STARTINGVALUES[playernumber -1][0], STARTINGVALUES[playernumber -1][1],
-                          STARTINGVALUES[playernumber -1][2], STARTINGVALUES[playernumber -1][3],
-                          STARTINGVALUES[playernumber -1][4], STARTINGVALUES[playernumber -1][5])                      
+    if lightcycle_type == player_choices[0]:
+        temp = Lightcycle(STARTINGVALUES[player_number - 1][0], STARTINGVALUES[player_number - 1][1],
+                          STARTINGVALUES[player_number - 1][2], STARTINGVALUES[player_number - 1][3],
+                          STARTINGVALUES[player_number - 1][4], STARTINGVALUES[player_number - 1][5])
+        temp.map_keys(KEYPRESSES[player_number - 1][0], KEYPRESSES[player_number - 1][1],
+                      KEYPRESSES[player_number - 1][2], KEYPRESSES[player_number - 1][3])
+        if player_joysticks[player_number - 1] is not None: temp.set_joystick(player_joysticks[player_number - 1])
+    elif lightcycle_type == player_choices[2]:
+        temp = RandomLightCycle(STARTINGVALUES[player_number - 1][0], STARTINGVALUES[player_number - 1][1],
+                                STARTINGVALUES[player_number - 1][2], STARTINGVALUES[player_number - 1][3],
+                                STARTINGVALUES[player_number - 1][4], STARTINGVALUES[player_number - 1][5])
+    elif lightcycle_type == player_choices[3]:
+        temp = RandomLightCycleAvoid(STARTINGVALUES[player_number - 1][0], STARTINGVALUES[player_number - 1][1],
+                                     STARTINGVALUES[player_number - 1][2], STARTINGVALUES[player_number - 1][3],
+                                     STARTINGVALUES[player_number - 1][4], STARTINGVALUES[player_number - 1][5])
+    elif lightcycle_type == player_choices[4]:
+        temp = ZigZagLightcycle(STARTINGVALUES[player_number - 1][0], STARTINGVALUES[player_number - 1][1],
+                                STARTINGVALUES[player_number - 1][2], STARTINGVALUES[player_number - 1][3],
+                                STARTINGVALUES[player_number - 1][4], STARTINGVALUES[player_number - 1][5])
+    elif lightcycle_type == player_choices[5]:
+        temp = ZigZagAvoidLightcycle(STARTINGVALUES[player_number - 1][0], STARTINGVALUES[player_number - 1][1],
+                                     STARTINGVALUES[player_number - 1][2], STARTINGVALUES[player_number - 1][3],
+                                     STARTINGVALUES[player_number - 1][4], STARTINGVALUES[player_number - 1][5])
+    elif lightcycle_type == player_choices[6]:
+        temp = ShieldLightcycle(STARTINGVALUES[player_number - 1][0], STARTINGVALUES[player_number - 1][1],
+                                STARTINGVALUES[player_number - 1][2], STARTINGVALUES[player_number - 1][3],
+                                STARTINGVALUES[player_number - 1][4], STARTINGVALUES[player_number - 1][5])
+    elif lightcycle_type == player_choices[7]:
+        temp = HunterLightCycle(STARTINGVALUES[player_number - 1][0], STARTINGVALUES[player_number - 1][1],
+                                STARTINGVALUES[player_number - 1][2], STARTINGVALUES[player_number - 1][3],
+                                STARTINGVALUES[player_number - 1][4], STARTINGVALUES[player_number - 1][5])
     return temp
+
+
+# noinspection PyGlobalUndefined
 def init(player1type: str, player2type: str, player3type: str, player4type: str):
     global lightcycles
     lightcycles = []
@@ -104,14 +107,14 @@ def init(player1type: str, player2type: str, player3type: str, player4type: str)
     lightcycles.append(create_lightcyle(player3type,3))    
     lightcycles.append(create_lightcyle(player4type,4))
 
-    if player1type == playerchoices[7]:    
-        lightcycles[0].assignTargets([lightcycles[1], lightcycles[2], lightcycles[3]])
-    if player2type == playerchoices[7]:    
-        lightcycles[1].assignTargets([lightcycles[0], lightcycles[2], lightcycles[3]])
-    if player3type == playerchoices[7]:    
-        lightcycles[2].assignTargets([lightcycles[0], lightcycles[1], lightcycles[3]])
-    if player4type == playerchoices[7]:    
-        lightcycles[3].assignTargets([lightcycles[0], lightcycles[1], lightcycles[2]])
+    if player1type == player_choices[7]:
+        lightcycles[0].assign_targets([lightcycles[1], lightcycles[2], lightcycles[3]])
+    if player2type == player_choices[7]:
+        lightcycles[1].assign_targets([lightcycles[0], lightcycles[2], lightcycles[3]])
+    if player3type == player_choices[7]:
+        lightcycles[2].assign_targets([lightcycles[0], lightcycles[1], lightcycles[3]])
+    if player4type == player_choices[7]:
+        lightcycles[3].assign_targets([lightcycles[0], lightcycles[1], lightcycles[2]])
 
 def main():
 
@@ -123,34 +126,33 @@ def main():
 def get_options():
     manager.clear_and_reset()
 
-    defaultAI = "Hunter"
-    joysticktext = ["None"]
+    default_ai = "Hunter"
+    joystick_text = ["None"]
     for joystick in joysticks:
-        joysticktext.append(joystick.get_name())
+        joystick_text.append(joystick.get_name())
     #Create all possible joystick options
         
 
-    windowHeight = (HEIGHT-30)/4
-    optionWindows = []
-    optionWindows.append(OptionWindow(rect=pygame.Rect((0,0),(WIDTH,windowHeight)),
-                                        manager=manager, player_number=1, 
-                                        player_choices=playerchoices, 
-                                        initial_name = playerNames[0], starting_player_type="Human"))
-    optionWindows.append(OptionWindow(rect=pygame.Rect((0,windowHeight),(WIDTH,windowHeight)),
-                                        manager=manager, player_number=2, 
-                                        player_choices=playerchoices, 
-                                        initial_name = playerNames[1], starting_player_type=defaultAI))
-    optionWindows.append(OptionWindow(rect=pygame.Rect((0,windowHeight*2),(WIDTH,windowHeight)),
-                                        manager=manager, player_number=3, 
-                                        player_choices=playerchoices, 
-                                        initial_name = playerNames[2], starting_player_type=defaultAI))
-    optionWindows.append(OptionWindow(rect=pygame.Rect((0,windowHeight*3),(WIDTH,windowHeight)),
-                                        manager=manager, player_number=4, 
-                                        player_choices=playerchoices, 
-                                        initial_name = playerNames[3], starting_player_type=defaultAI)) 
+    window_height = (HEIGHT-30)/4
+    option_windows = [OptionWindow(rect=pygame.Rect((0, 0), (WIDTH, window_height)),
+                                   manager=manager, player_number=1,
+                                   player_choices=player_choices,
+                                   initial_name=player_names[0], starting_player_type="Human"),
+                      OptionWindow(rect=pygame.Rect((0, window_height), (WIDTH, window_height)),
+                                   manager=manager, player_number=2,
+                                   player_choices=player_choices,
+                                   initial_name=player_names[1], starting_player_type=default_ai),
+                      OptionWindow(rect=pygame.Rect((0, window_height * 2), (WIDTH, window_height)),
+                                   manager=manager, player_number=3,
+                                   player_choices=player_choices,
+                                   initial_name=player_names[2], starting_player_type=default_ai),
+                      OptionWindow(rect=pygame.Rect((0, window_height * 3), (WIDTH, window_height)),
+                                   manager=manager, player_number=4,
+                                   player_choices=player_choices,
+                                   initial_name=player_names[3], starting_player_type=default_ai)]
 
     if pygame.joystick.get_count() > 0:
-        for window in optionWindows: window.addJoystick(joysticktext=joysticktext)
+        for window in option_windows: window.add_joystick(joystick_text=joystick_text)
     launch_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((0, -30), (150, 30)),
                                                 text='Launch Game',
                                                 anchors={'centerx': 'centerx','bottom': 'bottom'},
@@ -162,48 +164,48 @@ def get_options():
             if event.type == pygame.QUIT:
                 end_game()
             if event.type == pygame.JOYDEVICEADDED or event.type == pygame.JOYDEVICEREMOVED:
-                    for element in optionWindows: element.removeJoystick()
-                    joysticktext = ["None"]
+                    for element in option_windows: element.remove_joystick()
+                    joystick_text = ["None"]
                     for x in range(pygame.joystick.get_count()):
                         joysticks.append(pygame.joystick.Joystick(x))
                     for joystick in joysticks:
-                        joysticktext.append(joystick.get_name())
+                        joystick_text.append(joystick.get_name())
                     if pygame.joystick.get_count() > 0:
-                        for window in optionWindows: window.addJoystick(joysticktext=joysticktext)
+                        for window in option_windows: window.add_joystick(joystick_text=joystick_text)
             manager.process_events(event)
             if event.type == pygame_gui.UI_BUTTON_PRESSED:
                 if event.ui_element == launch_button:
                     done = True
             if event.type == pygame_gui.UI_DROP_DOWN_MENU_CHANGED:
                 if pygame.joystick.get_count() > 0:
-                    for window in optionWindows:
-                        if event.ui_element != window.getJoystickDropdown():
-                            window.addJoystick(joysticktext=joysticktext) 
+                    for window in option_windows:
+                        if event.ui_element != window.get_joystick_dropdown():
+                            window.add_joystick(joystick_text=joystick_text)
         manager.update(time_delta)
         WIN.fill((0, 0, 0))
         manager.draw_ui(WIN)
         pygame.display.update() # Update the display
 
     for i in range(0,4):
-        playerNames[i] = optionWindows[i].getName()
+        player_names[i] = option_windows[i].get_name()
     if pygame.joystick.get_count() > 0:
         for i in range(0,4):
-            if optionWindows[i].getJoystick() != "None":
+            if option_windows[i].get_joystick() != "None":
                 for joystick in joysticks:
-                    if joystick.get_name() == optionWindows[i].getJoystick():
-                        playerJoysticks[i] = joystick
+                    if joystick.get_name() == option_windows[i].get_joystick():
+                        player_joysticks[i] = joystick
 
 
-    init(optionWindows[0].getPlayerType(), optionWindows[1].getPlayerType(), 
-         optionWindows[2].getPlayerType(), optionWindows[3].getPlayerType())
+    init(option_windows[0].get_player_type(), option_windows[1].get_player_type(),
+         option_windows[2].get_player_type(), option_windows[3].get_player_type())
     play_game()
 
 def play_game():
     manager.clear_and_reset()
-    p1label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect((0, 0), (150, VERTICALOFFSET)), text=playerNames[0], manager=manager)
-    p2label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect((200, 0), (150, VERTICALOFFSET)), text=playerNames[1], manager=manager)
-    p3label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect((400, 0), (150, VERTICALOFFSET)), text=playerNames[2], manager=manager)
-    p4label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect((600, 0), (150, VERTICALOFFSET)), text=playerNames[3], manager=manager)
+    p1label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect((0, 0), (150, VERTICALOFFSET)), text=player_names[0], manager=manager)
+    p2label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect((200, 0), (150, VERTICALOFFSET)), text=player_names[1], manager=manager)
+    p3label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect((400, 0), (150, VERTICALOFFSET)), text=player_names[2], manager=manager)
+    p4label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect((600, 0), (150, VERTICALOFFSET)), text=player_names[3], manager=manager)
 
     while 1:
         #Clear only the display area
@@ -220,11 +222,11 @@ def play_game():
 
         manager.update(time_delta)        
 
-        aliveCount = 0
+        alive_count = 0
         for lightcycle in lightcycles:
             lightcycle.update()
             lightcycle.draw()
-            if not lightcycle.is_destroyed(): aliveCount+=1
+            if not lightcycle.is_destroyed(): alive_count+=1
         
         if lightcycles[0].is_destroyed():
             p1label.set_text("Destroyed")
@@ -239,18 +241,18 @@ def play_game():
         manager.draw_ui(WIN)
         pygame.display.update() # Update the display
 
-        if aliveCount <=1: game_over(aliveCount)
+        if alive_count <=1: game_over(alive_count)
 
-def game_over(aliveCount):
+def game_over(alive_count):
     manager.clear_and_reset()
     output = ""
-    if aliveCount == 0:
+    if alive_count == 0:
         output += "Aww, no winner!"
     else:
         i = 0
         for j in range(0,3):
             if not lightcycles[j].is_destroyed(): i = j
-        output += f"Congratulations {playerNames[i]}!!!!"
+        output += f"Congratulations {player_names[i]}!!!!"
     
     congats_text = pygame_gui.elements.UILabel(relative_rect=pygame.Rect((0, 150), (-1, -1)), text=output,
                                                 anchors={'centerx': 'centerx','top': 'top'},

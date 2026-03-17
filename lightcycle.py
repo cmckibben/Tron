@@ -2,8 +2,13 @@ import pygame
 from pygame.locals import *
 from direction import Direction
 
-class Lightcycle():
+class Lightcycle:
     def __init__(self, x: int, y: int, speed: int, direction: Direction, color: pygame.Color, size: int):
+        self.joystick = None
+        self.left = None
+        self.right = None
+        self.down = None
+        self.up = None
         self.x  = x
         self.y  = y
         self.speed = speed
@@ -35,6 +40,12 @@ class Lightcycle():
             if self.joystick.get_axis(0) < -0.5: self.change_direction(Direction.LEFT)
             if self.joystick.get_axis(1) > 0.5: self.change_direction(Direction.DOWN)
             if self.joystick.get_axis(1) < -0.5: self.change_direction(Direction.UP)
+        self.move()
+        if pygame.Surface.get_at(self.screen, (int(self.x), int(self.y))) != pygame.Color(0, 0, 0):
+            self.destroyed = True
+            self.speed = 0
+
+    def move(self):
         if self.direction == Direction.DOWN:
             self.y += self.speed
         if self.direction == Direction.UP:
@@ -42,10 +53,7 @@ class Lightcycle():
         if self.direction == Direction.RIGHT:
             self.x += self.speed
         if self.direction == Direction.LEFT:
-            self.x -= self.speed 
-        if pygame.Surface.get_at(self.screen, (int(self.x), int(self.y))) != pygame.Color(0, 0, 0):
-            self.destroyed = True
-            self.speed = 0
+            self.x -= self.speed
 
     def is_destroyed(self)-> bool:
         return self.destroyed
